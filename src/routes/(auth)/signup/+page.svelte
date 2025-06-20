@@ -74,7 +74,7 @@
 			<form
 				method="POST"
 				action="?/signup"
-				class="grid gap-4"
+				class="grid gap-4 pb-3"
 				use:enhance={() => {
 					loading = true;
 					return async ({ update }) => {
@@ -178,13 +178,13 @@
 
 				<Button
 					type="submit"
-					class="text-foreground w-full font-bold"
+					class="bg-primary"
 					disabled={passwordStrength.score < 5 || !emailIsValid || email.length === 0}
 				>
 					{#if loading}
 						<LoaderCircleIcon />
 					{:else}
-						Sign up
+						<span class="text-primary-foreground font-medium">Sign up</span>
 					{/if}
 				</Button>
 			</form>
