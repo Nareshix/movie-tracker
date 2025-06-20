@@ -4,7 +4,7 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { enhance } from '$app/forms';
-	import { LoaderCircleIcon } from '@lucide/svelte';
+	import { Eye, EyeOff, LoaderCircleIcon } from '@lucide/svelte';
 	import type { PageProps } from './$types';
 	let { data, form }: PageProps = $props();
 
@@ -70,6 +70,7 @@
 			<Card.Description>Create an account to continue</Card.Description>
 		</Card.Header>
 		<Card.Content>
+			<p class="error"></p>
 			<form
 				method="POST"
 				action="?/signup"
@@ -117,33 +118,13 @@
 						<button
 							type="button"
 							onclick={() => (showPassword = !showPassword)}
-							class="absolute inset-y-0 right-0 flex w-9 items-center justify-center text-gray-500 hover:text-gray-700"
+							class="text-primary absolute inset-y-0 right-0 flex w-9 items-center justify-center"
 							aria-label={showPassword ? 'Hide password' : 'Show password'}
 						>
 							{#if showPassword}
-								<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
-									></path>
-								</svg>
+								<EyeOff class="w-4" />
 							{:else}
-								<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-									></path>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-									></path>
-								</svg>
+								<Eye class="w-4" />
 							{/if}
 						</button>
 					</div>
@@ -151,7 +132,7 @@
 					<!-- Password Strength Indicator -->
 					<div class="space-y-2">
 						<!-- Strength Bar -->
-						<div class="h-1 overflow-hidden rounded-full bg-gray-200">
+						<div class="bg-secondary h-1 overflow-hidden rounded-full">
 							<div
 								class="h-full transition-all duration-500 {STRENGTH_CONFIG.colors[
 									passwordStrength.score
@@ -162,7 +143,7 @@
 
 						<!-- Strength Text -->
 						<div class="flex justify-between text-sm">
-							<span class="text-gray-600">Must contain:</span>
+							<span class="text-primary">Must contain:</span>
 						</div>
 
 						<!-- Requirements List -->
@@ -178,7 +159,7 @@
 											></path>
 										</svg>
 									{:else}
-										<svg class="h-4 w-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+										<svg class="h-4 w-4 text-muted-foreground" fill="currentColor" viewBox="0 0 20 20">
 											<path
 												fill-rule="evenodd"
 												d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -186,7 +167,7 @@
 											></path>
 										</svg>
 									{/if}
-									<span class="text-xs {req.met ? 'text-emerald-600' : 'text-gray-500'}">
+									<span class="text-xs {req.met ? 'text-emerald-600' : 'text-muted-foreground'}">
 										{req.text}
 									</span>
 								</li>
