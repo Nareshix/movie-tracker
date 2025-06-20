@@ -1,23 +1,25 @@
 import { query } from '$lib/db';
 import type { Actions } from './$types';
+import bcrypt from 'bcrypt';
 
 export const actions = {
 	signup: async ({ request }) => {
 		const data = await request.formData();
-		const email = data.get('email');
-		const password = data.get('password');
+		const email = data.get('email') as string;
+		const password = data.get('password') as string;
+
 		try {
-			const result = await query(
+			const saltRounds = 10;
+			const hashedPassword = await bcrypt.hash(password, saltRounds);
+			await query(
 				'INSERT INTO users (email, password) VALUES ($1, $2)',
-				[email, password] // You should hash the password first!
+				[email, hashedPassword] // You should hash the password first!
 			);
-			console.log(result);
 		} catch (err) {
 			console.log(err);
 		}
 	}
 } satisfies Actions;
-
 
 // length: 229,
 // severity: 'ERROR',
