@@ -4,8 +4,8 @@
 	import { Input } from "$lib/components/ui/input/index.js";
 	import * as Card from "$lib/components/ui/card/index.js";
   	import { goto } from "$app/navigation";
-	import { sendVerificationEmail } from "$lib/api/sendVerificationEmail";
-	import { toast } from "svelte-sonner";
+	// import { sendVerificationEmail } from "$lib/api/sendVerificationEmail";
+	// import { toast } from "svelte-sonner";
 	import { Eye, EyeOff } from "@lucide/svelte";
 	
 
@@ -13,18 +13,6 @@
 	let password = $state('');
 	let showPassword = $state(false);
 
-	async function sendVerificationEmailToBackend(email:string, password:string){
-		try {
-			await sendVerificationEmail(email, password)
-			sessionStorage.setItem('email', email)
-			sessionStorage.setItem('type', 'signup')
-			goto('/auth/verify-email')
-
-		} catch (err: any) {
-			toast.error(err.message)
-		}
-		
-	}
 	// Email validation regex
 	const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 	// Password strength validation
