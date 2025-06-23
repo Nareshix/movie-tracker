@@ -12,7 +12,8 @@ interface ErrorDB {
 export const actions = {
 	signup: async ({ request }) => {
 		const data = await request.formData();
-		const email = data.get('email') as string;
+		let email = data.get('email') as string;
+		email = email.toLowerCase()
 		const password = data.get('password') as string;
 		let user_id;
 
