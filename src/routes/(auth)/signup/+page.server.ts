@@ -1,8 +1,9 @@
-import { query } from '$lib/db';
-import { fail } from '@sveltejs/kit';
+import { query } from '$lib/server/db';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import bcrypt from 'bcrypt';
-
+import { sendEmail } from '$lib/server/email';
+import { randomBytes } from 'crypto';
 interface ErrorDB {
 	message: string;
 	code: string;
@@ -13,25 +14,50 @@ export const actions = {
 		const data = await request.formData();
 		const email = data.get('email') as string;
 		const password = data.get('password') as string;
-
+		let user_id;
+		
+		// hash password and store it in unverified_user db (auto expires after 15 min)
+		const token = randomBytes(64).toString('hex');
 		try {
 			const saltRounds = 10;
 			const hashedPassword = await bcrypt.hash(password, saltRounds);
-			await query(
-				'INSERT INTO users (email, hashed_password) VALUES ($1, $2)',
-				[email, hashedPassword] // You should hash the password first!
+			const output = await query(
+				'INSERT INTO unverified_users (email, hashed_password, token) VALUES ($1, $2, $3) RETURNING user_id;',
+				[email, hashedPassword, token]
 			);
+			user_id = output.rows[0].user_id;
 		} catch (err) {
 			const error = err as ErrorDB;
 			if (error.code == '23505') {
-				return fail(401, {
-					ErrorMsg: 'This email is already registered.'
+				return fail(400, {
+					ErrorMsg: 'Please verify your email. If you did not recieve an email, try again 5 min later.'
 				});
 			}
 			console.log(error.message);
-			return fail(401, {
+			return fail(500, {
 				ErrorMsg: 'An error has occured within the system. Pleas try again later.'
 			});
 		}
+
+
+
+		// send verification email
+		try {
+			// Dont forget to add https during prod
+			const verification_link = `http://localhost:5173/verify-email?user_id=${user_id}&token=${token}`;
+			await sendEmail(
+				email,
+				'Verify Your Email',
+				`Hi there! 👋 Please <a href="${verification_link}">verify your email</a>, to contine with us. If you did not request this email, feel free to ignore it! 
+				
+				`
+			);
+		} catch (err) {
+			console.log(err);
+			return fail(500, {
+				ErrorMsg: 'The server is unable to send and email for verificaion. Please try again later'
+			});
+		}
+		redirect(307, '/verify-email-display');
 	}
 } satisfies Actions;
