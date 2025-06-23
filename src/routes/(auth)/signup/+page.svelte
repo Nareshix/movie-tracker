@@ -226,7 +226,7 @@
 
 			<div class="mt-4 text-center text-sm">
 				Have an account?
-				<a href="/auth/login" class="underline"> Login </a>
+				<a href="/login" class="underline"> Login </a>
 			</div>
 		</Card.Content>
 	</Card.Root>
