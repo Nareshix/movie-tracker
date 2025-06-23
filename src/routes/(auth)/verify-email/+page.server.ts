@@ -31,6 +31,6 @@ export const load: PageServerLoad = async ({ url }) => {
 			error: 'This verification link is invalid or has expired.'
 		};
 	}
-	redirect(308, '/');
+	redirect(307, '/');
 
 };

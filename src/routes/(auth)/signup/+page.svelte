@@ -63,11 +63,12 @@
 			requirements
 		};
 	});
+	$effect(() => {
+		if (form?.ErrorMsg) {
+			toast.error(form.ErrorMsg);
+		}
+	});
 </script>
-
-{#if form?.ErrorMsg}
-	{toast.error(form.ErrorMsg)}
-{/if}
 
 <div class="grid h-svh place-items-center">
 	<Card.Root class="mx-auto w-full max-w-sm">
@@ -226,7 +227,7 @@
 
 			<div class="mt-4 text-center text-sm">
 				Have an account?
-				<a href="/auth/login" class="underline"> Login </a>
+				<a href="/login" class="underline"> Login </a>
 			</div>
 		</Card.Content>
 	</Card.Root>
