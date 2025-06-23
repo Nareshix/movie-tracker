@@ -1,26 +1,17 @@
 <script lang="ts">
- import * as Card from "$lib/components/ui/card/index.js";
- import { Mail } from "@lucide/svelte";
- 
+	import type { PageServerData } from './$types';
+
+	let { data }: { data: PageServerData } = $props();
+
 </script>
 
-<div class="grid place-items-center h-svh">
-<Card.Root class="w-full max-w-sm text-center">
- <Card.Header>
-
-    <div class="grid place-items-center">
-    <Mail class="mb-4"/>
-
-  <Card.Title class="mb-1">An email has been sent to you  </Card.Title>
-  <Card.Description
-   >Please open it and verify your email!</Card.Description
-  >        
-    </div>
-  </Card.Header>
- <Card.Footer>
-    <div class="grid place-items-center">
-    If you did not recieve the email in a few minutes, plrease retry the process again
-    </div>
- </Card.Footer>
-</Card.Root>
-</div>
+{#if data.error}
+	{data.error}
+{:else}
+	<div>
+		<p>
+			Hi you should automatically be redirected to the home page. If you did not redirec
+			automtaically <u><a href="/">Click here</a></u>
+		</p>
+	</div>
+{/if}
