@@ -63,11 +63,12 @@
 			requirements
 		};
 	});
+	$effect(() => {
+		if (form?.ErrorMsg) {
+			toast.error(form.ErrorMsg);
+		}
+	});
 </script>
-
-{#if form?.ErrorMsg}
-	{toast.error(form.ErrorMsg)}
-{/if}
 
 <div class="grid h-svh place-items-center">
 	<Card.Root class="mx-auto w-full max-w-sm">
