@@ -1,8 +1,26 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
+
+	let count = $state(5);
+
+	const timer = setInterval(() => {
+		count--;
+		if (count <= 0) {
+			clearInterval(timer); 
+			goto('/'); 
+		}
+	}, 1000);
 </script>
 
-<h1>{data.post.title}</h1>
-<div>{@html data.post.content}</div>
+{#if data.success}
+	<h1>
+		Password reset successful. <br /> You will be redirected to the
+		<a href="/" class="underline">home page</a>
+		in {count}
+	</h1>
+{:else}
+	<h1>{data.errorMsg}</h1>
+{/if}
