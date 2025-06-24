@@ -4,6 +4,17 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, cookies }) => {
 	try {
+		/*
+		in the SQL query, some where around
+		
+		deleted_sessions AS (
+		...
+		RETURNING user_id
+		)
+		
+		the RETURNING can be anything for now as we are not using the value of it
+		but it is important to add something else postgres will throw a syntax error
+		 */
 		const result = await query(
 			`
 				WITH used_token AS (
