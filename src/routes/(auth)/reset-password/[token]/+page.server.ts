@@ -1,7 +1,8 @@
 import { query } from '$lib/server/db';
+import { createSession } from '$lib/session';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, cookies }) => {
 	try {
 		const result = await query(
 			`
@@ -23,6 +24,10 @@ export const load: PageServerLoad = async ({ params }) => {
 				errorMsg: 'This reset password link is invalid or has expired. Please try again.'
 			};
 		}
+		const user_id = result.rows[0].id
+		const session = await createSession(user_id);
+		cookies.set('sessionToken', session.token, { path: '/' });
+	
 		return { success: true };
 	} catch (err) {
 		// log it
