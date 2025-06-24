@@ -3,7 +3,6 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import bcrypt from 'bcrypt';
 import { sendEmail } from '$lib/server/email';
-import { randomBytes } from 'crypto';
 import { nanoid } from 'nanoid';
 
 interface ErrorDB {
