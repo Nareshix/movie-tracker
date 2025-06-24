@@ -4,6 +4,8 @@ import type { Actions } from './$types';
 import bcrypt from 'bcrypt';
 import { sendEmail } from '$lib/server/email';
 import { randomBytes } from 'crypto';
+import { nanoid } from 'nanoid';
+
 interface ErrorDB {
 	message: string;
 	code: string;
@@ -34,7 +36,7 @@ export const actions = {
 		}
 
 		// hash password and store it in unverified_user db (auto expires after 15 min)
-		const token = randomBytes(64).toString('hex');
+		const token = nanoid()
 		try {
 			const saltRounds = 10;
 			const hashedPassword = await bcrypt.hash(password, saltRounds);
