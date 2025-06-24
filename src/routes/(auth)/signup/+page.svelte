@@ -102,13 +102,13 @@
 						required
 					/>
 					{#if showEmailError}
-						<p class="mt-1 text-xs text-red-500">Please enter a valid email address</p>
+						<p class="text-xs text-red-500">Please enter a valid email address</p>
 					{/if}
 				</div>
 				<div class="grid gap-2">
 					<div class="flex items-center">
 						<Label for="password">Password</Label>
-						<a href="/forgot-password" class="ml-auto inline-block text-sm underline"> Forgot your password? </a>
+						<a href="/reset-password" class="ml-auto inline-block text-sm underline"> Forgot your password? </a>
 					</div>
 
 					<!-- Enhanced Password Input -->
