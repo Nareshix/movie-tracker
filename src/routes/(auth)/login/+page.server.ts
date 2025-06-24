@@ -25,8 +25,7 @@ export const actions = {
 			if (isMatch) {
 				const session = await createSession();
 				cookies.set('sessionToken', session.token, { path: '/' });
-			} else {
-				return fail(401, {
+			} else {				return fail(401, {
 					ErrorMsg: 'Wrong Password'
 				});
 			}
