@@ -12,18 +12,19 @@ export const actions = {
 
 		// checks if password is correct with db, then create a session
 		try {
-			const result = await query('SELECT hashed_password FROM users WHERE email=$1', [email]);
+			const result = await query('SELECT id, hashed_password FROM users WHERE email=$1', [email]);
 
 			if (result.rowCount === 0) {
 				return fail(409, {
 					ErrorMsg: 'email does not exist. Please sign up'
 				});
 			}
+			const user_id = result.rows[0].id 
 			const hashed_password = result.rows[0].hashed_password;
 			const isMatch = await bcrypt.compare(password, hashed_password);
 
 			if (isMatch) {
-				const session = await createSession();
+				const session = await createSession(user_id);
 				cookies.set('sessionToken', session.token, { path: '/' });
 			} else {				return fail(401, {
 					ErrorMsg: 'Wrong Password'
