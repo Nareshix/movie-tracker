@@ -19,14 +19,15 @@ export const actions = {
 					ErrorMsg: 'email does not exist. Please sign up'
 				});
 			}
-			const user_id = result.rows[0].id 
+			const user_id = result.rows[0].id;
 			const hashed_password = result.rows[0].hashed_password;
 			const isMatch = await bcrypt.compare(password, hashed_password);
 
 			if (isMatch) {
 				const session = await createSession(user_id);
 				cookies.set('sessionToken', session.token, { path: '/' });
-			} else {				return fail(401, {
+			} else {
+				return fail(401, {
 					ErrorMsg: 'Wrong Password'
 				});
 			}
