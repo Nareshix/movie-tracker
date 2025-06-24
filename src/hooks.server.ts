@@ -2,8 +2,9 @@ import { validateSessionToken } from '$lib/session';
 import { redirect, type Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const mainAppRoutes = ['/discover', '/search', '/home', '/lists'];
-	const authRoutes = [
+	// cant access /logout without even logging in in the first place
+	const routesToNotAccessWithoutLogin = ['/discover', '/search', '/home', '/lists', '/logout'];
+	const routesToNotAccessWhenLoggedIn = [
 		'/login',
 		'/signup',
 		'/reset-password',
@@ -11,14 +12,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 		'/verify-email-display'
 	];
 
-	if (authRoutes.includes(event.url.pathname)) {
+	if (routesToNotAccessWhenLoggedIn.includes(event.url.pathname)) {
 		const sessionToken = event.cookies.get('sessionToken');
 		if (sessionToken) {
 			throw redirect(303, '/home');
 		}
 	}
 
-	if (mainAppRoutes.includes(event.url.pathname)) {
+	if (routesToNotAccessWithoutLogin.includes(event.url.pathname)) {
 		const sessionToken = event.cookies.get('sessionToken');
 		if (!sessionToken) {
 			throw redirect(303, '/login');
