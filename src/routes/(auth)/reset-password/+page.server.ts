@@ -50,7 +50,7 @@ export const actions = {
 			const verification_link = `http://localhost:5173/reset-password/${token}`;
 			await sendEmail(
 				email,
-				'Verify Your Email',
+				'Reset Your Password',
 				`Hi there! 👋 <a href="${verification_link}">Reset your password</a>.  If you did not request this, it is <strong>strongly recommended</strong> to change your password! 
 				
 				`
