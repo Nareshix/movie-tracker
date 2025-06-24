@@ -106,7 +106,7 @@
 					{/if}
 				</div>
 				<div class="grid gap-2">
-						<Label for="password">Password</Label>
+						<Label for="password">New Password</Label>
 
 					<!-- Enhanced Password Input -->
 					<div class="relative">
