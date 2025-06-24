@@ -64,9 +64,9 @@ async function getSession(sessionId: string): Promise<Session | null> {
 	}
 	const row = result.rows[0];
 	const session: Session = {
-		id: row[0],
-		secretHash: row[1],
-		createdAt: new Date(row[2] * 1000)
+		id: row.id,
+		secretHash: row.secret_hash,
+		createdAt: new Date(row.created_at * 1000)
 	};
 
 	// Check expiration
