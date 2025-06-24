@@ -1,5 +1,5 @@
 import { query } from '$lib/server/db';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import bcrypt from 'bcrypt';
 import { createSession } from '$lib/session';
@@ -15,7 +15,7 @@ export const actions = {
 			const result = await query('SELECT hashed_password FROM users WHERE email=$1', [email]);
 
 			if (result.rowCount === 0) {
-				return fail(400, {
+				return fail(409, {
 					ErrorMsg: 'email does not exist. Please sign up'
 				});
 			}
@@ -26,12 +26,13 @@ export const actions = {
 				const session = await createSession();
 				cookies.set('sessionToken', session.token, { path: '/' });
 			} else {
-				return fail(400, {
+				return fail(401, {
 					ErrorMsg: 'Wrong Password'
 				});
 			}
 		} catch (err) {
 			console.log(err);
 		}
+		throw redirect(303, '/home');
 	}
 } satisfies Actions;
