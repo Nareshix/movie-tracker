@@ -18,7 +18,7 @@
 {#if data.success}
 	<h1>
 		Password reset successful. <br /> You will be redirected to the
-		<a href="/" class="underline">home page</a>
+		<a href="/home" class="underline">home page</a>
 		in {count}
 	</h1>
 {:else}
