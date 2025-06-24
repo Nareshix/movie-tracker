@@ -47,11 +47,11 @@ export const actions = {
 		// send reset password token
 		try {
 			// Dont forget to add https during prod
-			const verification_link = `http://localhost:5173/reset-password/${token}`;
+			const resetPasswordLink = `http://localhost:5173/reset-password/${token}`;
 			await sendEmail(
 				email,
 				'Reset Your Password',
-				`Hi there! 👋 <a href="${verification_link}">Reset your password</a>.  If you did not request this, it is <strong>strongly recommended</strong> to change your password! 
+				`Hi there! 👋 <a href="${resetPasswordLink}">Reset your password</a>.  If you did not request this, it is <strong>strongly recommended</strong> to change your password! 
 				
 				`
 			);
