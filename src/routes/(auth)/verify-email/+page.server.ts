@@ -10,12 +10,13 @@ const ADD_USER_AFTER_VERIFICATION = `
         RETURNING email, hashed_password
     )
     INSERT INTO users (email, hashed_password)
-    SELECT email, hashed_password FROM moved_user;
+    SELECT email, hashed_password FROM moved_user
+    RETURNING id;
 `;
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
 	const token = url.searchParams.get('token');
-	const user_id = url.searchParams.get('user_id');
+	const user_id = url.searchParams.get('user_id') as string;
 	let result;
 	try {
 		result = await query(ADD_USER_AFTER_VERIFICATION, [token, user_id]);
@@ -32,8 +33,10 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 			error: 'This verification link is invalid or has expired.'
 		};
 	}
+	const newlyCreatedUserId = result.rows[0].id;
+
 	try {
-		const session = await createSession();
+		const session = await createSession(newlyCreatedUserId);
 		cookies.set('sessionToken', session.token, { path: '/' });
 	} catch (err) {
 		// log the error
@@ -43,5 +46,4 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 		};
 	}
 	throw redirect(303, '/home');
-
 };
