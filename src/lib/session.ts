@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 
 const sessionExpiresInSeconds = 60 * 60 * 24 * 90; // 90 day
 
-export async function createSession(): Promise<SessionWithToken> {
+export async function createSession(user_id: string): Promise<SessionWithToken> {
 	const now = new Date();
 
 	const id = nanoid();
@@ -19,10 +19,11 @@ export async function createSession(): Promise<SessionWithToken> {
 		token
 	};
 
-	await query('INSERT INTO session (id, secret_hash, created_at) VALUES ($1, $2, $3)', [
+	await query('INSERT INTO session (id, secret_hash, created_at, user_id) VALUES ($1, $2, $3, $4)', [
 		session.id,
 		session.secretHash,
-		Math.floor(session.createdAt.getTime() / 1000)
+		Math.floor(session.createdAt.getTime() / 1000),
+		user_id
 	]);
 
 	return session;
