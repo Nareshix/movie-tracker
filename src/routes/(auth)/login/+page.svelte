@@ -95,21 +95,14 @@
 							{/if}
 						</button>
 					</div>
-
-
 				</div>
 
-				<Button
-					type="submit"
-					class="bg-primary"
-					disabled={!emailIsValid || email.length === 0}
-				>
+				<Button type="submit" class="bg-primary" disabled={!emailIsValid || email.length === 0}>
 					{#if loading}
-					<span class="text-primary-foreground font-medium">Login</span>
-					<LoaderCircle class="animate-spin"/>
+						<span class="text-primary-foreground font-medium">Login</span>
+						<LoaderCircle class="animate-spin" />
 					{:else}
-					<span class="text-primary-foreground font-medium">Login</span>
-
+						<span class="text-primary-foreground font-medium">Login</span>
 					{/if}
 				</Button>
 			</form>

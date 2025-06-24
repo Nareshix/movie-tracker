@@ -193,8 +193,8 @@
 					disabled={passwordStrength.score < 5 || !emailIsValid || email.length === 0}
 				>
 					{#if loading}
-					<span class="text-primary-foreground font-medium">Sign up</span>
-					<LoaderCircle class="animate-spin"/>
+						<span class="text-primary-foreground font-medium">Sign up</span>
+						<LoaderCircle class="animate-spin" />
 					{:else}
 						<span class="text-primary-foreground font-medium">Sign up</span>
 					{/if}
