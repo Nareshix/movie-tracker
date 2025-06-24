@@ -13,26 +13,24 @@ export const actions = {
 	signup: async ({ request }) => {
 		const data = await request.formData();
 		let email = data.get('email') as string;
-		email = email.toLowerCase()
+		email = email.toLowerCase();
 		const password = data.get('password') as string;
 		let user_id;
 
 		// check if user alr exists
 		try {
-			const userExist = await query(
-				'SELECT * FROM users WHERE email = $1', [email]
-			)
-			if (userExist.rowCount !== 0){
-				return fail(400,{
-					ErrorMsg: 'This email already exists. If you have forgotten your password, click forgot password'
-				})
+			const userExist = await query('SELECT * FROM users WHERE email = $1', [email]);
+			if (userExist.rowCount !== 0) {
+				return fail(409, {
+					ErrorMsg:
+						'This email already exists. If you have forgotten your password, click forgot password'
+				});
 			}
-		} catch (err){
-			console.log(err)
+		} catch (err) {
+			console.log(err);
 			return fail(500, {
 				ErrorMsg: 'An error has occured within the system. Pleas try again later.'
 			});
-
 		}
 
 		// hash password and store it in unverified_user db (auto expires after 15 min)
@@ -48,7 +46,7 @@ export const actions = {
 		} catch (err) {
 			const error = err as ErrorDB;
 			if (error.code == '23505') {
-				return fail(400, {
+				return fail(409, {
 					ErrorMsg:
 						'Please verify your email. If you did not recieve an email, try again 5 min later.'
 				});
@@ -76,6 +74,6 @@ export const actions = {
 				ErrorMsg: 'The server is unable to send and email for verificaion. Please try again later'
 			});
 		}
-		redirect(307, '/verify-email-display');
+		throw redirect(303, '/verify-email-display');
 	}
 } satisfies Actions;
